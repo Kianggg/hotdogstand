@@ -1,0 +1,117 @@
+<html>
+  <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+
+  <head>
+    <!-- CSS and Font -->
+    <link href="styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gaegu">
+    <!-- Site Title -->
+    <title>Snack Shop</title>
+  </head>
+
+  <body>
+    <h1>Kiang's Snack Shop</h1>
+    <div id="menuButtons">
+        <button id="add" onclick="add()">Add Item</button>
+        <button id="show" onclick="show()">Show Cart</button>
+        <button id="checkout" onclick="checkout()">Check Out</button>
+    </div>
+    <h2>Menu:</h2>
+    <ol id="menu">
+    </ol>
+    <h2>Your Cart:</h2>
+    <ul id="receipt">
+    </ul>
+  </body>
+
+  <script>
+
+    let discountThreshold = 20;
+    let taxrate = 0.0625;
+
+    let menuItems = [
+        ["Hot Dog", "$4.00", 4.00],
+        ["Fries", "$3.00", 3.00],
+        ["Soda", "$1.50", 1.50],
+        ["Sauerkraut", "$1.00", 1.00]
+    ]
+
+    let cart = Array.from("0".repeat(menuItems.length));
+
+    $(document).ready(function() {
+        for (let n = 0; n < menuItems.length; n++) {
+            $(menu).append("<li>" + menuItems[n][0] + " - - - - - " + menuItems[n][1] + "</li>");
+        }
+    });
+
+    function add() {
+      let item = -1;
+      while (item < 0 || item > menuItems.length) {
+        item = prompt("Which item would you like? Input a number:");
+        if (item == null || item == "") {
+          return;
+        }
+      }
+
+      /* Offset because menu displayed to user is indexed at 1 */
+      item--;
+
+      let amountToAdd = -1;
+      while (amountToAdd < 0) {
+        amountToAdd = prompt("How many would you like?");
+        if (amountToAdd == null || amountToAdd == "") {
+          return;
+        }
+      }
+
+      cart[item] += amountToAdd;
+
+      alert("Added to cart: " + menuItems[item][0] + ", " + amountToAdd);
+    }
+
+    function show() {
+      $(receipt).html("");
+      for (let n = 0; n < menuItems.length; n++) {
+        if (cart[n] != 0) {
+          $(receipt).append("<li>(" + cart[n] + ") " + menuItems[n][0] + "</li>");
+        }
+      }
+
+      /* Add a line break before the money part is displayed */
+      $(receipt).append("<br><br>");
+
+      /* Doing math */
+      let subtotal = 0
+      for (let n = 0; n < menuItems.length; n++) {
+        subtotal += menuItems[n][2] * cart[n];
+      }
+
+      /* Calculate discount */
+      let discount = 0
+      if (subtotal > discountThreshold) {
+        discount = subtotal * 0.10;
+      }
+
+      /* Calculate tax */
+      let tax = (subtotal - discount) * taxrate;
+
+      /* Calculate total */
+      let total = subtotal - discount + tax;
+
+      /* Display values */
+      subtotal = subtotal.toFixed(2);
+      discount = discount.toFixed(2);
+      tax = tax.toFixed(2);
+      total = total.toFixed(2);
+      $(receipt).append("Subtotal: $" + subtotal + "<br>");
+      $(receipt).append("Discount: $" + discount + "<br>");
+      $(receipt).append("Tax: $" + tax + "<br>");
+      $(receipt).append("Total: $" + total);
+    }
+
+    function checkout() {
+      $(receipt).html("");
+      cart = Array.from("0".repeat(menuItems.length));
+    }
+  </script>
+</html>

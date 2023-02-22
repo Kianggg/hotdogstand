@@ -1,0 +1,38 @@
+:root {
+    --background: #641a15;
+    --font-color: #c0bad1;
+    --button-color: #854130;
+}
+
+body {
+    font-size: x-large;
+    font-family: 'Gaegu', sans-serif;
+    background-color: var(--background);
+    color: var(--font-color);
+}
+
+#menubuttons {
+    display: flex;
+}
+
+#receipt {
+    list-style-type: none;
+}
+
+button {
+    height: 70px;
+    width: 170px;
+    text-decoration: none;
+    transition: 0.3s;
+    border-radius: 2px;
+    font-family: 'Gaegu', sans-serif;
+    font-size: x-large;
+    color: var(--font-color);
+    background-color: var(--button-color);
+    border: 4px solid var(--background);
+}
+
+button:hover {
+    border: 4px solid var(--font-color);
+    opacity: 90%;
+}
